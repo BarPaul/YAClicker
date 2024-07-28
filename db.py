@@ -1,7 +1,7 @@
 from typing import Any, Literal, List, Union
 from dataclasses import dataclass
 from aiosqlite import connect
-from asyncio import run, create_task
+from asyncio import run
 
 async def __execute(query: str, args: tuple = None, fetchall: bool = False) -> Any:
     async with connect('database.db') as db:
@@ -41,11 +41,20 @@ async def upd_member(uid: int, update_type: Literal["money", "gems", "money, gem
 async def add_timer(uid: int, time: int, event: str):
     await __execute('INSERT INTO timers VALUES (?, strftime(\'%s\', \'now\') + ?, ?)', (uid, time, event,))
 
+async def get_timer(uid: int, event: str):
+    return await __execute('SELECT unix <= strftime(\'%s\', \'now\') FROM timers WHERE id = ? AND event = ?', (uid, event,))
+
+async def rem_timer(uid: int, event: str):
+    await __execute("DELETE FROM timers WHERE id = ? AND event = ?", (uid, event,))
+
 async def add_payment(uid: int, _, diamonds: int):
     await __execute("INSERT INTO payments VALUES (?, strftime(\'%s\', \'now\') , ?)", (uid, diamonds,))
 
 async def rem_payment(uid: int, unix: int, diamonds: int):
     await __execute("DELETE FROM payments WHERE id = ? AND unix = ? AND diamonds = ?", (uid, unix, diamonds,))
+
+async def get_payments(uid: int) -> list:
+    return list(await __execute("SELECT * FROM payments WHERE id = ?", (uid,), fetchall=True))
 
 async def main():
     await __execute('''CREATE TABLE IF NOT EXISTS users (
@@ -60,13 +69,7 @@ async def main():
     id INTEGER NOT NULL,
     unix INTEGER NOT NULL,
     diamonds INTEGER NOT NULL)''')
-    create_task(__check_timers())
 
-async def __check_timers():
-    while True:
-        await __execute("DELETE FROM timers WHERE unix <= strftime('%s', 'now');")
 
-async def get_payments(uid: int) -> list:
-    return list(await __execute("SELECT * FROM payments WHERE id = ?", (uid,), fetchall=True))
-
-run(main())
+if __name__ == '__main__':
+    run(main())
