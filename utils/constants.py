@@ -14,7 +14,7 @@ class Diamond(StatesGroup):
 def private(func):
     async def wrapper(call: CallbackQuery, state = None):
         if int(call.data.split("_")[-1]) != call.from_user.id:
-            await call.answer('Не твое - не трогай!', True)
+            await call.answer('Не твое - не трогай!')
             return
         return await func(call) if state is None else await func(call, state)
     return wrapper
@@ -50,3 +50,15 @@ ANSWERS =  {
     'in_progress': 'Принимается оплата 🎁',
     'failed': 'Заказ в обработке. ⌛'
 }
+MARRIAGE = lambda uid1, uid2: InlineMarkup(inline_keyboard=[
+    [InlineButton(text="✅ Принять", callback_data=f"accept_{uid1}_{uid2}"), InlineButton(text="💔 Отклонить", callback_data=f"decline_{uid1}_{uid2}")]
+])
+STATUS_MARRY = lambda hours: {
+    0 <= hours < 31 * 24: "💍 Молодожены",
+    31 * 24 <= hours < 2 * 31 * 24: "🎁 Секретная годовщина",
+    2 * 31 * 24 <= hours < 3 * 31 * 24: "🌽 Кукурузная годовщина",
+    3 * 31 * 24 <= hours < 6 * 31 * 24: "🥇 Золотая годовщина",
+    6 * 31 * 24 <= hours < 12 * 31 * 24: "💎 Алмазная годовщина",
+    12 * 31 * 24 <= hours < 24 * 31 * 24: "💖 Любовная годовщина",
+    24 * 31 * 24 <= hours: "💘 Божественная любовь"
+}.get(True, "Error")

@@ -1,6 +1,5 @@
 .env
 env
-__pycache__/*
-ext/__pycache__/*
+__pycache__
 database.db
 .gitignore

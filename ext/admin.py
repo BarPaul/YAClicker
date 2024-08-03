@@ -1,8 +1,8 @@
-from urils.db import upd_member
+from utils.db import upd_member
 from aiogram import Router, html
 from aiogram.filters import Command
 from aiogram.types import Message
-from constants import admin_filter
+from utils.constants import admin_filter
 
 
 admin = Router(name="Админская часть")
