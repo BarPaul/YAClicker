@@ -1,4 +1,4 @@
-from db import upd_member
+from urils.db import upd_member
 from aiogram import Router, html
 from aiogram.filters import Command
 from aiogram.types import Message

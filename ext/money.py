@@ -1,9 +1,9 @@
 from re import compile
-from db import add_timer, get_timer, rem_timer
+from utils.db import add_timer, get_timer, rem_timer
 from aiogram import F, types, Router
-from constants import private
+from utils.constants import private
 
-money = Router('Денежная часть')
+money = Router(name='Денежная часть')
 
 @money.callback_query(F.data.regexp(compile(r'earn_money_(\d+)')))
 @private

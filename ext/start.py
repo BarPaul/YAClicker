@@ -1,6 +1,6 @@
 from re import compile
-from db import get_member, add_member
-from constants import FIND_DIAMOND, MENU
+from utils.db import get_member, add_member
+from utils.constants import FIND_DIAMOND, MENU
 from aiogram.filters import Command, CommandStart, CommandObject
 from aiogram import F, html, types, Router
 

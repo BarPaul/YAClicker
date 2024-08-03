@@ -4,7 +4,7 @@ from aiosqlite import connect
 from asyncio import run
 
 async def __execute(query: str, args: tuple = None, fetchall: bool = False) -> Any:
-    async with connect('database.db') as db:
+    async with connect('utils/database.db') as db:
         execute_args = (query,) if args is None else (query, args,)
         async with db.execute(*execute_args) as cursor:
             res = await cursor.fetchall() if fetchall else await cursor.fetchone()

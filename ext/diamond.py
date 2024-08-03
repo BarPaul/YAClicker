@@ -1,10 +1,10 @@
-import db
+import utils.db as db
 from re import compile
-from payment import generate_payment, get_operation
+from utils.payment import generate_payment, get_operation
 from aiogram import Router, F, html
 from aiogram.types import Message, CallbackQuery
 from aiogram.fsm.context import FSMContext
-from constants import private, Diamond, CURRENCY, PAYMENT_LINK, CANCEL, unix_to_data, ANSWERS, FIND_DIAMOND
+from utils.constants import private, Diamond, CURRENCY, PAYMENT_LINK, CANCEL, unix_to_data, ANSWERS, FIND_DIAMOND
 
 diamond = Router(name="Алмазная часть")
 
